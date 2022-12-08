@@ -4,6 +4,7 @@ const app = express()
 
 app.set('view engine', 'ejs')
 app.set('views', './views')
+app.use(express.static('public'))
 
 let db
 
@@ -14,7 +15,12 @@ app.get('/', async (req, res) => {
 })
 
 app.get('/admin', (req, res) => {
-  res.send('Hello Admin!')
+  res.render('admin')
+})
+
+app.get('/api/animals', async (req, res) => {
+  const allAnimals = await db.collection('Animals').find().toArray()
+  res.json(allAnimals)
 })
 
 async function start() {
